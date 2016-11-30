@@ -68,5 +68,11 @@ CapsLock键魔改。
 * RAlt+z: 结束
 * RAlt+s: 开始
 
+### `Track.ahk`
+实现ManicTime的Track Computer功能。后台自动运行。
+
 ### `Lib`
 使用的库文件，目前主要是获取目录的库。
+
+## TODO
+* Track.ahk: 只有窗口Title变动时才记录，记录时长。增加可视化工具
