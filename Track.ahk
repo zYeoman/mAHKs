@@ -17,18 +17,26 @@ Else {
         ExitApp
     }
     Sleep, 1000
-    SQL := "CREATE TABLE Track (Title, ProcessName, ProcessPath,Time,PRIMARY KEY(Time ASC))"
+    SQL := "CREATE TABLE Track (Title, ProcessName, ProcessPath,Time,Length,PRIMARY KEY(Time ASC))"
     If !DB.Exec(SQL)
        MsgBox, 16, SQLite Error, % "Msg:`t" . DB.ErrorMsg . "`nCode:`t" . DB.ErrorCode
     Sleep, 1000
 }
+title_old := ""
+last_time := A_Now
 TrackLOP:
 WinGetTitle title, A
 WinGet path, ProcessPath, A
 WinGet name, ProcessName, A
-SQL = INSERT INTO Track VALUES('%title%','%name%','%path%','%A_Now%%A_Msec%')`;
-If !DB.Exec(SQL)
-   MsgBox, 16, SQLite Error, % "Msg:`t" . DB.ErrorMsg . "`nCode:`t" . DB.ErrorCode
+If (title != title_old)
+{
+    time_len := A_Now - last_time
+    last_time := A_Now
+    SQL = INSERT INTO Track VALUES('%title_old%','%name%','%path%','%last_time%%A_Msec%','%time_len%')`;
+    If !DB.Exec(SQL)
+       MsgBox, 16, SQLite Error, % "Msg:`t" . DB.ErrorMsg . "`nCode:`t" . DB.ErrorCode
+    WinGetTitle title_old, A
+}
 SetTimer TrackLOP, 1000
 
-::asdlkfghagkweweuoithsldkgjadf::adlskghahlekgjawlghkladjg
+
