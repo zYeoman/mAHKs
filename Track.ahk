@@ -42,5 +42,5 @@ If (title != title_old)
     StringReplace, title_old, title_old,','', ALL
 }
 SetTimer TrackLOP, 1000
-
+return
 

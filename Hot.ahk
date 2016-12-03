@@ -19,6 +19,11 @@ CapsOn=false
 Caps=flase
 ChangeFlag=0
 SetCapsLockState, AlwaysOff
+SetTimer EarthLive,10000
+#Include, Track.ahk
+EarthLive:
+SetTimer EarthLive, off
+#Include, Earthlive.ahk
 ;==================   ·¬ÇÑÊ±ÖÓ    ==================
 #Include, Time.ahk
 ;==================     ÈÈ×Ö´®    ================== 

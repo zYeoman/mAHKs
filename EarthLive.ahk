@@ -1,18 +1,16 @@
-While true
-{
-    url_start := "http://res.cloudinary.com/mickircloud/image/fetch/http://himawari8-dl.nict.go.jp/himawari8/img/D531106/1d/550/"
-    url_start := "http://himawari8-dl.nict.go.jp/himawari8/img/D531106/1d/550/"
-    url_end   := "000_0_0.png"
-    now = %a_nowutc%
-    now += -15, minutes
-    formattime, url, %now%,yyyy/MM/dd/HHmm
-    url_short := substr(url, 1, strlen(url)-1)
-    url = %url_start%%url_short%%url_end%
-    _download_to_file(url, a_temp . "\wallpaper.png")
-    DllCall("SystemParametersInfo", UInt, 0x14, UInt, 0, Str, a_temp . "\Wallpaper.png", UInt, 1)
-    Sleep, 600000
-}
-
+url_start := "http://res.cloudinary.com/mickircloud/image/fetch/http://himawari8-dl.nict.go.jp/himawari8/img/D531106/1d/550/"
+url_start := "http://himawari8-dl.nict.go.jp/himawari8/img/D531106/1d/550/"
+url_end   := "000_0_0.png"
+EarthLiveLoop:
+now = %a_nowutc%
+now += -15, minutes
+formattime, url, %now%,yyyy/MM/dd/HHmm
+url_short := substr(url, 1, strlen(url)-1)
+url = %url_start%%url_short%%url_end%
+_download_to_file(url, a_temp . "\wallpaper.png")
+DllCall("SystemParametersInfo", UInt, 0x14, UInt, 0, Str, a_temp . "\Wallpaper.png", UInt, 1)
+SetTimer EarthLiveLoop, 600000
+return
 
 
 ;Function by Wicked
