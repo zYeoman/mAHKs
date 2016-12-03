@@ -28,6 +28,9 @@ TrackLOP:
 WinGetTitle title, A
 WinGet path, ProcessPath, A
 WinGet name, ProcessName, A
+StringReplace, title, title,','', ALL
+StringReplace, path, path,','', ALL
+StringReplace, name, name,','', ALL
 If (title != title_old)
 {
     time_len := A_Now - last_time
@@ -36,6 +39,7 @@ If (title != title_old)
     If !DB.Exec(SQL)
        MsgBox, 16, SQLite Error, % "Msg:`t" . DB.ErrorMsg . "`nCode:`t" . DB.ErrorCode
     WinGetTitle title_old, A
+    StringReplace, title_old, title_old,','', ALL
 }
 SetTimer TrackLOP, 1000
 
