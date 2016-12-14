@@ -71,8 +71,11 @@ CapsLock键魔改。
 ### `Track.ahk`
 实现ManicTime的Track Computer功能。后台自动运行。
 
+* Table track, columns:title, processname, processpath, time, length
+* Example: README.md, vim.exe, /usr/bin/vim.exe, A_NowA_Msec, 20
+
 ### `Lib`
 使用的库文件，目前主要是获取目录的库。
 
 ## TODO
-* Track.ahk: 只有窗口Title变动时才记录，记录时长。增加可视化工具
+* Track.ahk: 增加可视化工具
