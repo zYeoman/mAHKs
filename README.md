@@ -75,7 +75,7 @@ CapsLock键魔改。
 * Example: README.md, vim.exe, /usr/bin/vim.exe, A_NowA_Msec, 20
 
 ### `Lib`
-使用的库文件，目前主要是获取目录的库。
+使用的库文件，目前主要是获取目录的库和sqlite的库。
 
 ## TODO
 * Track.ahk: 增加可视化工具
