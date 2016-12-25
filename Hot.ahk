@@ -175,6 +175,8 @@ Suspend off
 return
 
 Esc::
+;会把动态鼠标变成静态。
+;TODO:
 SystemCursor(-1)
 MouseMove, 500, 200, 0
 return
