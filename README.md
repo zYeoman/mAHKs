@@ -20,6 +20,7 @@ My Autohotkey Scripts.
 * Capslock: 映射为ESC
 * Win+`: 当前窗口置顶
 * Ctrl+Alt+r: 重新加载当前脚本
+* ESC: 隐藏/显示鼠标
 
 ### `Capslocks.ahk`
 CapsLock键魔改。
