@@ -31,15 +31,16 @@ WinGet name, ProcessName, A
 StringReplace, title, title,','', ALL
 StringReplace, path, path,','', ALL
 StringReplace, name, name,','', ALL
-If (title != title_old)
-{
+If (title != title_old) {
     time_len := A_Now - last_time
     last_time := A_Now
     SQL = INSERT INTO Track VALUES('%title_old%','%name%','%path%','%last_time%%A_Msec%','%time_len%')`;
     If !DB.Exec(SQL)
        MsgBox, 16, SQLite Error, % "Msg:`t" . DB.ErrorMsg . "`nCode:`t" . DB.ErrorCode
-    WinGetTitle title_old, A
-    StringReplace, title_old, title_old,','', ALL
+    WinGetTitle tmp, A
+    StringReplace, tmp, tmp,','', ALL
+    If (tmp != "")
+        title_old := tmp
 }
 SetTimer TrackLOP, 1000
 return
