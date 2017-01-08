@@ -201,23 +201,29 @@ return
 ToggleCursors()
 {
     static AndMask, XorMask, $, h_cursor, b
+    ,c0,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13 ; system cursors
+    , b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13 ; blank cursors
     if ($ = "") ; init when requested or at first call
     {
         $ := "1"
         VarSetCapacity( h_cursor,4444, 1 )
         VarSetCapacity( AndMask, 32*4, 0xFF )
         VarSetCapacity( XorMask, 32*4, 0 )
-        b := DllCall("CreateCursor", Uint, 0, Int, 0, Int, 0
-        , Int, 32, Int, 32, Uint, &AndMask, Uint, &XorMask )
+        system_cursors = 32512,32513,32514,32515,32516,32642,32643,32644,32645,32646,32648,32649,32650
+        StringSplit c, system_cursors, `,
+        Loop %c0%
+        {
+            b%A_Index% := DllCall("CreateCursor", Uint, 0, Int, 0, Int, 0
+            , Int, 32, Int, 32, Uint, &AndMask, Uint, &XorMask )
+        }
     }
 
     if ($ == "1")
     {
-        h_cursor := DllCall( "CopyImage", Uint, b, Uint, 2, Int, 0, Int, 0, Uint, 0 )
-        Cursors = 32512,32513,32514,32515,32516,32642,32643,32644,32645,32646,32648,32649,32650
-        Loop, Parse, Cursors, `,
+        Loop %c0%
         {
-            DllCall( "SetSystemCursor", Uint, h_cursor, Int, A_Loopfield)
+            h_cursor := DllCall( "CopyImage", Uint,b%A_Index%, Uint,2, Int,0, Int,0, Uint,0 )
+            DllCall( "SetSystemCursor", Uint,h_cursor, Uint,c%A_Index% )
         }
         $ := "0"
     }
