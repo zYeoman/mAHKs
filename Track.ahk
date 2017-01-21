@@ -22,25 +22,30 @@ Else {
        MsgBox, 16, SQLite Error, % "Msg:`t" . DB.ErrorMsg . "`nCode:`t" . DB.ErrorCode
     Sleep, 1000
 }
-title_old := ""
-last_time := A_Now
-TrackLOP:
+
 WinGetTitle title, A
-WinGet path, ProcessPath, A
-WinGet name, ProcessName, A
 StringReplace, title, title,','', ALL
-StringReplace, path, path,','', ALL
+WinGet name, ProcessName, A
 StringReplace, name, name,','', ALL
-If (title != title_old) {
+last_time := A_Now
+TrackTitle := "firefox.exe, SumatraPDF.exe, Conemu64.exe, Onenote.exe, Explorer.exe"
+TrackLOP:
+WinGetTitle title_now, A
+StringReplace, title_now, title_now,','', ALL
+WinGet name_now, ProcessName, A
+StringReplace, name_now, name_now,','', ALL
+If (name != name_now) or (InStr(TrackTitle, name_now) and (title != title_now)) {
     time_len := A_Now - last_time
     last_time := A_Now
-    SQL = INSERT INTO Track VALUES('%title_old%','%name%','%path%','%last_time%%A_Msec%','%time_len%')`;
+    SQL = INSERT INTO Track VALUES('%title%','%name%','%path%','%last_time%%A_Msec%','%time_len%')`;
     If !DB.Exec(SQL)
        MsgBox, 16, SQLite Error, % "Msg:`t" . DB.ErrorMsg . "`nCode:`t" . DB.ErrorCode
-    WinGetTitle tmp, A
-    StringReplace, tmp, tmp,','', ALL
-    If (tmp != "")
-        title_old := tmp
+    WinGetTitle title, A
+    WinGet path, ProcessPath, A
+    WinGet name, ProcessName, A
+    StringReplace, title, title,','', ALL
+    StringReplace, path, path,','', ALL
+    StringReplace, name, name,','', ALL
 }
 SetTimer TrackLOP, 1000
 return
