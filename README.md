@@ -1,6 +1,10 @@
 # mAHKs
 My Autohotkey Scripts.
 
+## TODO
+* Track.ahk: 增加可视化工具
+* Main: icon设计，右键菜单
+
 ## 功能简介
 
 ### `Hot.ahk`
@@ -75,8 +79,8 @@ CapsLock键魔改。
 * Table track, columns:title, processname, processpath, time, length
 * Example: README.md, vim.exe, /usr/bin/vim.exe, A_NowA_Msec, 20
 
+### `keyboard.ahk`
+桌面键盘。
+
 ### `Lib`
 使用的库文件，目前主要是获取目录的库和sqlite的库。
-
-## TODO
-* Track.ahk: 增加可视化工具
