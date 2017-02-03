@@ -19,6 +19,7 @@ CapsOn=false
 Caps=flase
 ChangeFlag=0
 SetCapsLockState, AlwaysOff
+Menu, Tray, Icon, H.ico
 SetTimer EarthLive,10000
 #Include, Track.ahk
 EarthLive:
