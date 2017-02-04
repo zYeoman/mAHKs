@@ -28,7 +28,7 @@ StringReplace, title, title,','', ALL
 WinGet name, ProcessName, A
 StringReplace, name, name,','', ALL
 last_time := A_Now
-TrackTitle := "firefox.exe, SumatraPDF.exe, Conemu64.exe, Onenote.exe, Explorer.exe"
+TrackTitle := "firefox.exe, SumatraPDF.exe, Conemu64.exe, Explorer.exe"
 TrackLOP:
 WinGetTitle title_now, A
 StringReplace, title_now, title_now,','', ALL
