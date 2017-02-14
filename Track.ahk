@@ -37,15 +37,17 @@ StringReplace, name_now, name_now,','', ALL
 If (name != "") and ((name != name_now) or (InStr(TrackTitle, name_now) and (title != title_now))) {
     time_len := A_Now - last_time
     last_time := A_Now
-    SQL = INSERT INTO Track VALUES('%title%','%name%','%path%','%last_time%%A_Msec%','%time_len%')`;
-    If !DB.Exec(SQL)
-       MsgBox, 16, SQLite Error, % "Msg:`t" . DB.ErrorMsg . "`nCode:`t" . DB.ErrorCode
-    WinGetTitle title, A
-    WinGet path, ProcessPath, A
-    WinGet name, ProcessName, A
-    StringReplace, title, title,','', ALL
-    StringReplace, path, path,','', ALL
-    StringReplace, name, name,','', ALL
+    If (time_len > 2) {
+        SQL = INSERT INTO Track VALUES('%title%','%name%','%path%','%last_time%','%time_len%')`;
+        If !DB.Exec(SQL)
+           MsgBox, 16, SQLite Error, % "Msg:`t" . DB.ErrorMsg . "`nCode:`t" . DB.ErrorCode
+        WinGetTitle title, A
+        WinGet path, ProcessPath, A
+        WinGet name, ProcessName, A
+        StringReplace, title, title,','', ALL
+        StringReplace, path, path,','', ALL
+        StringReplace, name, name,','', ALL
+    }
 }
 SetTimer TrackLOP, 1000
 return
