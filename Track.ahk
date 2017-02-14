@@ -34,7 +34,7 @@ WinGetTitle title_now, A
 StringReplace, title_now, title_now,','', ALL
 WinGet name_now, ProcessName, A
 StringReplace, name_now, name_now,','', ALL
-If (name != name_now) or (InStr(TrackTitle, name_now) and (title != title_now)) {
+If (name != "") and ((name != name_now) or (InStr(TrackTitle, name_now) and (title != title_now))) {
     time_len := A_Now - last_time
     last_time := A_Now
     SQL = INSERT INTO Track VALUES('%title%','%name%','%path%','%last_time%%A_Msec%','%time_len%')`;
