@@ -20,15 +20,9 @@ Caps=flase
 ChangeFlag=0
 SetCapsLockState, AlwaysOff
 Menu, Tray, Icon, H.ico
-SetTimer EarthLive,10000
 #Include, Track.ahk
-EarthLive:
-SetTimer EarthLive, off
-#Include, Earthlive.ahk
 ;==================   番茄时钟    ==================
 #Include, Time.ahk
-;==================     热字串    ================== 
-#include, Hotstr.ahk
 ;================== CapsLock 魔改 ==================
 #Include, Capslocks.ahk
 ;================== Gestures ==================
@@ -52,6 +46,13 @@ CapsLock & s::Suspend
 RAlt & n::
   path := Explorer_GetPath()
   Run ,python2 E:\6script\hwmd.py,%path%,Hide
+return
+
+LCtrl & Space::
+  InputBox, SearchTEXT,,,,,100
+  if SearchTEXT {
+    Run, https://www.google.com/search?hl=zh-CN&q=%SearchTEXT%
+  }
 return
 
 #Enter::
@@ -107,6 +108,20 @@ else{
 }
 return
 
+^s::
+if (OpenFlag==1){
+  SetTimer, ClearOpenFlag, off
+  OpenFlag = 0
+  Run, "D:\Sublime3\subl.exe" "%path%"
+}
+else{
+  Suspend On
+  Send, ^s
+  Suspend Off
+}
+return
+
+
 #!Space::
 path := Explorer_GetPath()
 if (path=="ERROR"){
@@ -124,9 +139,6 @@ return
 ;==================================================
 ;快捷键F3显示CMD窗口
 ;==================================================
-; conemu has its own hotkeys
-; #IfWinActive, ahk_exe ConEmu64.exe
-; conemu quake mode!! Wonderful!!
 F3::Send #{F4}
 
 ~^!n::
@@ -139,12 +151,6 @@ if (path!="ERROR")
 else
     send ^!n
 return
-
-;^!a::
-;h := DllCall("C:\Program Files (x86)\Tencent\WeChat\PrScrn.dll\PrScrn")
-;if ErrorLevel
-;  MsgBox %ErrorLevel%
-;return
 
 ;==================================================
 ;快捷键 ctrl+alt+t 当前路径运行cmd
@@ -235,7 +241,7 @@ ToggleCursors()
     }
 }
 
-RestoreCursors() 
+RestoreCursors()
 {
 	SPI_SETCURSORS := 0x57
 	DllCall( "SystemParametersInfo", UInt, SPI_SETCURSORS, UInt, 0, UInt, 0, UInt, 0 )
