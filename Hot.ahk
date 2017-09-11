@@ -8,7 +8,7 @@ Hot.ahk
 #Include Core.ahk
 Hot.Ini()
 
-;Win10 1703 删除了 StickyNot.exe 改成了 Windows APP 
+;Win10 1703 删除了 StickyNot.exe 改成了 Windows APP
 ;使用Win+W
 #Up::WinMaximize, A
 #Down::WinMinimize, A
@@ -17,7 +17,7 @@ Hot.Ini()
 
 LCtrl & Space::
     InputBox, SearchTEXT,,,,,100
-    if SearchTEXT 
+    if SearchTEXT
       Run, https://www.google.com/search?hl=zh-CN&q=%SearchTEXT%
 return
 
@@ -39,7 +39,7 @@ IfWinExist, AHK_pid %CMD_PID%
     WinWaitActive, AHK_pid %CMD_PID%
     if (path!="ERROR")
     {
-        Send, cd %Path%`n 
+        Send, cd %Path%`n
     }
 }
 Else
@@ -57,7 +57,7 @@ return
 ^e::
 ;使用编辑器打开文件
 	ControlGetFocus, current, A
-	If(current == "EVERYTHING_LISTVIEW1") 
+	If(current == "EVERYTHING_LISTVIEW1")
 	{
 		ClipSaved := ClipboardAll
 		Send ^+c
