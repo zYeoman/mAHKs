@@ -2,15 +2,14 @@
 Hot.ahk
 @author: zYeoman
 @date: 2017-09-11
-@description: ¸öÈË×ÔÓÃAHK½Å±¾
+@description: ä¸ªäººè‡ªç”¨AHKè„šæœ¬
 */
 
 #Include Core.ahk
-CMD_PID=
 Hot.Ini()
 
-;Win10 1703 É¾³ıÁË StickyNot.exe ¸Ä³ÉÁË Windows APP 
-;Ê¹ÓÃWin+W
+;Win10 1703 åˆ é™¤äº† StickyNot.exe æ”¹æˆäº† Windows APP 
+;ä½¿ç”¨Win+W
 #Up::WinMaximize, A
 #Down::WinMinimize, A
 #Enter::ToggleWindows()
@@ -23,7 +22,7 @@ LCtrl & Space::
 return
 
 ^!t::
-;µ±Ç°Â·¾¶ÔËĞĞcmd
+;å½“å‰è·¯å¾„è¿è¡Œcmd
 IfWinActive, AHK_exe Everything.exe
 {
     ClipSaved := ClipboardAll
@@ -56,7 +55,7 @@ return
 
 #IfWinActive, AHK_exe Everything.exe
 ^e::
-;Ê¹ÓÃ±à¼­Æ÷´ò¿ªÎÄ¼ş
+;ä½¿ç”¨ç¼–è¾‘å™¨æ‰“å¼€æ–‡ä»¶
 	ControlGetFocus, current, A
 	If(current == "EVERYTHING_LISTVIEW1") 
 	{
@@ -79,13 +78,13 @@ return
 
 #IfWinActive, AHK_exe explorer.exe
 ^e::
-;Ê¹ÓÃ±à¼­Æ÷´ò¿ªÎÄ¼ş
+;ä½¿ç”¨ç¼–è¾‘å™¨æ‰“å¼€æ–‡ä»¶
     Path := Explorer_GetSelected()
 	run % Hot.Editor . " " . Path
 return
 
 ^f::
-;Ê¹ÓÃEverythingËÑË÷
+;ä½¿ç”¨Everythingæœç´¢
 	path := Explorer_GetPath()
 	if (path!="ERROR"){
 		Send !{Space}
@@ -96,15 +95,15 @@ return
 	}
 return
 ^n::
-;ĞÂ½¨ÎÄ¼ş
+;æ–°å»ºæ–‡ä»¶
 	path := Explorer_GetPath()
 	if (path!="ERROR"){
-		InputBox, filename, ĞÂÎÄ¼ş, ,,,100
+		InputBox, filename, æ–°æ–‡ä»¶, ,,,100
 		FileAppend,, %path%\%filename%
 	}
 return
 ^+c::
-;¸´ÖÆÎÄ¼şÂ·¾¶
+;å¤åˆ¶æ–‡ä»¶è·¯å¾„
 	path := Explorer_GetSelected()
 	if (path!="ERROR"){
 		Clipboard := path
@@ -113,23 +112,23 @@ return
 #If
 
 Capslock::
-;CapslockÓ³ÉäÎªESC
+;Capslockæ˜ å°„ä¸ºESC
 Suspend on
 Send, {ESC}
 Suspend off
 return
 
 ;==================================================
-;¿ì½İ¼ü win+` Ê¹µ±Ç°´°¿ÚÖÃ¶¥
+;å¿«æ·é”® win+` ä½¿å½“å‰çª—å£ç½®é¡¶
 ;==================================================
 #`::
 	WinSet, AlwaysOnTop, toggle,A
 	WinGetTitle, getTitle, A
 	Winget, getTop,ExStyle,A
 	if (getTop & 0x8){
-	TrayTip ÒÑÖÃ¶¥, %getTitle%
+	TrayTip å·²ç½®é¡¶, %getTitle%
 	}else{
-	TrayTip È¡ÏûÖÃ¶¥, %getTitle%
+	TrayTip å–æ¶ˆç½®é¡¶, %getTitle%
 	}
 return
 
