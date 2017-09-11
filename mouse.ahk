@@ -10,7 +10,7 @@ Loop
 If ! PressKey
     Break
 Click 1
-Sleep 50
+Sleep 5000
 }
 Return
 
