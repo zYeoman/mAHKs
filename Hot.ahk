@@ -25,14 +25,25 @@ return
 
 #IfWinActive, ahk_exe Everything.exe
 Space::
-	ClipSaved := ClipboardAll
-	Send ^+c
-	ClipWait
-	Path = %clipboard%
-	Clipboard := ClipSaved
-	run % Editor . " " . Path
+	ControlGetFocus, current, A
+	If(current == "SysListView321") 
+	{
+		ClipSaved := ClipboardAll
+		Send ^+c
+		ClipWait
+		Path = %clipboard%
+		Clipboard := ClipSaved
+		run % Editor . " " . Path
+	}
+	Else
+	{
+		Suspend on
+		Send {Space}
+		Suspend off
+	}
 return
 #if
+
 #IfWinActive, ahk_exe explorer.exe
 Space::
     Path := Explorer_GetSelected()
@@ -107,6 +118,11 @@ return
 	}
 return
 
+^!r::
+RestoreCursors()
+Reload
+return
+
 ToggleWindows()
 {
 	WinGet,KDE_Win,MinMax,A
@@ -160,4 +176,10 @@ ToggleCursors()
         RestoreCursors()
         $ := "1"
     }
+}
+
+RestoreCursors()
+{
+	SPI_SETCURSORS := 0x57
+	DllCall( "SystemParametersInfo", UInt, SPI_SETCURSORS, UInt, 0, UInt, 0, UInt, 0 )
 }
