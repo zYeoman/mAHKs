@@ -1,159 +1,79 @@
 /*
 @author: zYeoman
-@date: 2017-09-10
+@date: 2017-09-11
 @description: 个人自用AHK脚本
- */
+*/
 
 SetCapsLockState, AlwaysOff
 Menu, Tray, Icon, H.ico
 DetectHiddenWindows, on
-;================== CapsLock 魔改 ==================
-#Include, Capslocks.ahk
-F4::ToggleSticky()
+Editor := "C:\LiberKey\Apps\Notepad++\App\Notepad++\notepad++.exe"
+;Win10 1703 删除了 StickyNot.exe 改成了 Windows APP 
+;使用Win+W
 #Up::WinMaximize, A
 #Down::WinMinimize, A
-#t::
-;SetTitleMatchMode, 2 ;设定ahk匹配窗口标题的模式
-winactivate,A ; 激活此窗口
-sleep, 500 ; 延时，确保
-WinSet, Style, ^0xC00000,A  ;切换标题栏
-return
+#Enter::ToggleWindows()
+#t::ToggleTitle()
 
 CapsLock & s::Suspend
-;=======================================================================
-; 来自https://github.com/xxr3376/AHK-script/blob/master/shortCut.ahk
-;=======================================================================
-RAlt & n::
-  path := Explorer_GetPath()
-  Run ,python2 E:\6script\hwmd.py,%path%,Hide
-return
 
 LCtrl & Space::
-  InputBox, SearchTEXT,,,,,100
-  if SearchTEXT {
-    Run, https://www.google.com/search?hl=zh-CN&q=%SearchTEXT%
-  }
+    InputBox, SearchTEXT,,,,,100
+    if SearchTEXT 
+      Run, https://www.google.com/search?hl=zh-CN&q=%SearchTEXT%
 return
 
-#Enter::
-WinGet,KDE_Win,MinMax,A
-if KDE_Win
-  WinRestore,A
-else
-  WinMaximize,A
+#IfWinActive, ahk_exe Everything.exe
+Space::
+	ClipSaved := ClipboardAll
+	Send ^+c
+	ClipWait
+	Path = %clipboard%
+	Clipboard := ClipSaved
+	run % Editor . " " . Path
 return
-
-;==================================================
-; 快捷键Ctrl+o开始打开
-; Ctrl+o Ctrl+s 用sublime打开
-; Ctrl+o Ctrl+v 用gvim打开
-;==================================================
-ClearOpenFlag:
-  OpenFlag := 0
-  return
-^o::
-WinGet, process, processName, % "ahk_id" WinExist("A")
-if (process=="explorer.exe"){
-  path := Explorer_GetSelected()
-}
-else if (process=="Explorer.EXE"){
-  path := Explorer_GetSelected()
-}
-else if (process=="Everything.exe"){
-  ClipSaved := ClipboardAll
-  Send ^+c
-  ClipWait
-  path = %clipboard%
-  Clipboard := ClipSaved
-}
-else{
-  Suspend On
-  Send ^o
-  Suspend Off
-  return
-}
-SetTimer, ClearOpenFlag, 500
-OpenFlag = 1
+#if
+#IfWinActive, ahk_exe explorer.exe
+Space::
+    Path := Explorer_GetSelected()
+	run % Editor . " " . Path
 return
-^v::
-if (OpenFlag==1){
-  SetTimer, ClearOpenFlag, off
-  OpenFlag = 0
-  Run, "C:\Windows\vim.bat" "--remote-silent" "%path%"
-}
-else{
-  Suspend On
-  Send, ^v
-  Suspend Off
-}
-return
-
-^s::
-if (OpenFlag==1){
-  SetTimer, ClearOpenFlag, off
-  OpenFlag = 0
-  Run, "D:\Sublime3\subl.exe" "%path%"
-}
-else{
-  Suspend On
-  Send, ^s
-  Suspend Off
-}
-return
-
-
-#!Space::
-path := Explorer_GetPath()
-if (path=="ERROR"){
-    Send !{Space}
-}
-else{
-    Send !{Space}
-    WinWaitActive, Everything
-    ControlSetText, Edit1, "%path%"%A_space%, A
-    sleep 150
-    send {end}
-}
-return
-
-;==================================================
-;快捷键F3显示CMD窗口
-;==================================================
-F3::Send #{F4}
+#if
 
 #IfWinActive, ahk_exe explorer.exe
-F7::
-path := Explorer_GetPath()
-if (path!="ERROR")
-{
-    InputBox, filename, 新文件, ,,,100
-    FileAppend,, %path%\%filename%
-}
+^f::
+;使用Everything搜索
+	path := Explorer_GetPath()
+	if (path!="ERROR"){
+		Send !{Space}
+		WinWaitActive, Everything
+		ControlSetText, Edit1, "%path%"%A_space%, A
+		sleep 150
+		send {end}
+	}
 return
-F8::
-path := Explorer_GetPath()
-if (path!="ERROR")
-{
-    InputBox, filename, 新文件夹, ,,,100
-    FileCreateDir, %path%\%filename%
-}
+^n::
+;新建文件
+	path := Explorer_GetPath()
+	if (path!="ERROR"){
+		InputBox, filename, 新文件, ,,,100
+		FileAppend,, %path%\%filename%
+	}
 return
 ^+c::
-path := Explorer_GetSelected()
-if (path!="ERROR")
-{
-    Clipboard := path
-}
+;复制文件路径
+	path := Explorer_GetSelected()
+	if (path!="ERROR"){
+		Clipboard := path
+	}
 return
 #If
 
-;==================================================
-;快捷键 ctrl+alt+t 当前路径运行cmd
-;==================================================
 ^!t::
+;当前路径运行cmd
 path := Explorer_GetPath()
 if (path=="ERROR"){
-    Run,  cmd /K cd /D "C:/user",,, CMD_PID
+    Run,  cmd /K cd /D "%UserProfile%",,, CMD_PID
 }
 else{
     Run,  cmd /K cd /D "%path%",,, CMD_PID
@@ -161,12 +81,8 @@ else{
 return
 
 
-;==================================================
-;映射Capslock为Esc键，Shift+Capslock为原来的Capslock
-;==================================================
-
 Capslock::
-;suspend to prevent calling esc
+;Capslock映射为ESC
 Suspend on
 Send, {ESC}
 Suspend off
@@ -181,41 +97,35 @@ return
 ;快捷键 win+` 使当前窗口置顶
 ;==================================================
 #`::
-WinSet, AlwaysOnTop, toggle,A
-WinGetTitle, getTitle, A
-Winget, getTop,ExStyle,A
-if (getTop & 0x8){
-TrayTip 已置顶, %getTitle%
-}else{
-TrayTip 取消置顶, %getTitle%
-}
+	WinSet, AlwaysOnTop, toggle,A
+	WinGetTitle, getTitle, A
+	Winget, getTop,ExStyle,A
+	if (getTop & 0x8){
+	TrayTip 已置顶, %getTitle%
+	}else{
+	TrayTip 取消置顶, %getTitle%
+	}
 return
 
-^!r::
-RestoreCursors()
-Reload
-return
-
-ToggleSticky()
+ToggleWindows()
 {
-    GroupAdd, Sticky, ahk_class Sticky_Notes_Note_Window
-    IfWinNotExist ahk_class Sticky_Notes_Note_Window
-    {
-        Run StikyNot.exe
-        WinActivate
-    }
-    Else IfWinNotActive ahk_class Sticky_Notes_Note_Window
-    {
-        WinShow, ahk_group Sticky
-        WinActivate
-    }
-    Else
-    {
-        WinHide, ahk_group Sticky
-        WinActivate, ahk_class Shell_TrayWnd
-    }
-    Return
+	WinGet,KDE_Win,MinMax,A
+	if KDE_Win
+	  WinRestore,A
+	else
+	  WinMaximize,A
+	return
 }
+
+ToggleTitle()
+{
+	;SetTitleMatchMode, 2 ;设定ahk匹配窗口标题的模式
+	winactivate,A ; 激活此窗口
+	sleep, 500 ; 延时，确保
+	WinSet, Style, ^0xC00000,A  ;切换标题栏
+	return
+}
+
 ToggleCursors()
 {
     static AndMask, XorMask, $, h_cursor, b
@@ -250,10 +160,4 @@ ToggleCursors()
         RestoreCursors()
         $ := "1"
     }
-}
-
-RestoreCursors()
-{
-	SPI_SETCURSORS := 0x57
-	DllCall( "SystemParametersInfo", UInt, SPI_SETCURSORS, UInt, 0, UInt, 0, UInt, 0 )
 }
