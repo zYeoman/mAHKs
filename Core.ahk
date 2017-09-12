@@ -72,8 +72,9 @@ class Hot
 			MsgBox, 0x44, Hello, It's your first time run this script, open Readme file?
 			IfMsgBox, Yes
 			{
-				this.Edit("README.md")
+				RunWait % Hot.Editor . " " . A_ScriptDir . "\README.md"
 			}
+			Run % Hot.Editor . " " . A_ScriptDir . "\Hot.User.ahk"
 		}
         
 	}
@@ -182,7 +183,7 @@ the command pass to run() can be:
 
 m(str := "")
 {
-	MsgBox, , % OneQuick.ProgramName, % str
+	MsgBox, , % Hot.ProgramName, % str
 }
 
 t(str := "")
