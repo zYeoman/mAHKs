@@ -56,23 +56,13 @@ return
 #IfWinActive, AHK_exe Everything.exe
 ^e::
 ;使用编辑器打开文件
-	ControlGetFocus, current, A
-	If(current == "EVERYTHING_LISTVIEW1")
-	{
-		ClipSaved := ClipboardAll
-		Send ^+c
-		ClipWait
-		Path = %clipboard%
-		Clipboard := ClipSaved
-        Send {ESC}
-		run % Hot.Editor . " " . Path
-	}
-	Else
-	{
-		Suspend on
-		Send {Space}
-		Suspend off
-	}
+	ClipSaved := ClipboardAll
+	Send ^+c
+	ClipWait
+	Path = %clipboard%
+	Clipboard := ClipSaved
+	Send {ESC}
+	run % Hot.Editor . " " . Path
 return
 #if
 
