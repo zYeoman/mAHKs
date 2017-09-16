@@ -56,6 +56,8 @@ class Hot
 		Menu, Tray, Add, Pause Thread, Sub_Hot_TogglePause
         Menu, Tray, Add
         
+        Menu, Tray, Default, Suspend Hotkey
+		Menu, Tray, Click, 1
         ; Create a Hot.User.ahk file
 		; and add a User_ComputerName class
 		user_str := "User_" A_ComputerName
