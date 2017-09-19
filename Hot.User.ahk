@@ -3,6 +3,7 @@ class User_DESKTOP_ANOH053
 {
 	Ini()
 	{
+        File.TODOFile := "C:\Users\Yongwen\Nextcloud\todo.txt"
         Hot.Editor:="C:\src\LiberKey\Apps\Notepad++\App\Notepad++\notepad++.exe"
         Process, Exist
         ExeList := Object()

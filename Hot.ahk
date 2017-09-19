@@ -19,6 +19,7 @@ Hot.Ini()
 LCtrl & Space::Win.CommandDialog() ;打开运行框
 
 ^!t::File.RunCmdHere()
+Capslock & t::File.OpenTODO()
 
 #IfWinActive, AHK_exe Everything.exe
 ^e::
@@ -41,6 +42,11 @@ return
 Capslock::
 ;Capslock映射为ESC
 Suspend on
+IfWinActive AHK_exe notepad.exe
+{
+    Send, ^s
+    Send, !{F4}
+}
 Send, {ESC}
 Suspend off
 return

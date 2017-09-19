@@ -149,11 +149,24 @@ class Win
 
 class File
 {
+    static TODOFile = 
     pCMD := ""
+    pTODO := ""
     
-    OpenFile()
+    OpenTODO()
     {
-        FilePath := this.GetPath(1)
+        if(this.TODOFile == "")
+		{
+			this.TODOFile := %A_ScriptDir% + "/todo.txt"
+		}
+        tFilename := this.TODOFile
+        run %tFilename%
+    }
+    
+    OpenFile(FilePath="")
+    {
+        if(FilePath=="")
+            FilePath := this.GetPath(1)
         if (FilePath!="ERROR")
             run % Hot.Editor . " " . FilePath
     }
