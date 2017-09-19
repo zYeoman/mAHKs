@@ -1,6 +1,8 @@
 #NoEnv
+#NoTrayIcon
 #SingleInstance force
-#Include, Lib/Class_SQLiteDB.ahk
+#Include Lib\Class_SQLiteDB.ahk
+
 DBFileName = %A_ScriptDir%\Track.DB
 DB := new SQLiteDB
 Sleep, 1000
@@ -8,7 +10,7 @@ If FileExist(DBFileName) {
     If !DB.OpenDB(DBFileName) {
         MsgBox, 16, SQLite Error, % "Msg:`t" . DB.ErrorMsg . "`nCode:`t" . DB.ErrorCode
         ExitApp
-}
+    }
     Sleep, 1000
 }
 Else {
@@ -51,4 +53,6 @@ If (name != "") and ((name != name_now) or (InStr(TrackTitle, name_now) and (tit
 }
 SetTimer TrackLOP, 1000
 return
+
+^!#+a::MsgBox Start Track
 

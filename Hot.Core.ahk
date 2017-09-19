@@ -79,6 +79,9 @@ class Hot
 			Run % Hot.Editor . " " . A_ScriptDir . "\Hot.User.ahk"
 		}
         
+        Run, %A_ScriptDir%\Scripts\Time.ahk
+        Run, %A_ScriptDir%\Scripts\Track.ahk
+        
 	}
 
 	SetIcon(ico)
