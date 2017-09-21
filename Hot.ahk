@@ -7,7 +7,6 @@ Hot.ahk
 
 #Include Hot.Core.ahk
 Hot.Ini()
-
 ;Win10 1703 删除了 StickyNot.exe 改成了 Windows APP
 ;使用Win+W
 #Up::WinMaximize, A ;最大化
@@ -20,6 +19,10 @@ LCtrl & Space::Win.CommandDialog() ;打开运行框
 
 ^!t::File.RunCmdHere()
 Capslock & t::File.OpenTODO()
+Capslock & j::Send {DOWN}
+Capslock & k::Send {UP}
+Capslock & h::Send {LEFT}
+Capslock & l::Send {RIGHT}
 
 #IfWinActive, AHK_exe Everything.exe
 ^e::
