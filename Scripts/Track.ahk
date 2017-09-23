@@ -1,4 +1,5 @@
 #NoEnv
+#Persistent
 #NoTrayIcon
 #SingleInstance force
 #Include Lib\Class_SQLiteDB.ahk
@@ -53,6 +54,3 @@ If (name != "") and ((name != name_now) or (InStr(TrackTitle, name_now) and (tit
 }
 SetTimer TrackLOP, 1000
 return
-
-^!#+a::MsgBox Start Track
-
