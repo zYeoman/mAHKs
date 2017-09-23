@@ -18,17 +18,22 @@ Hot.Ini()
 LCtrl & Space::Win.CommandDialog() ;打开运行框
 
 ^!t::File.RunCmdHere()
-Capslock & t::File.OpenTODO()
+Capslock & d::File.OpenTODO()
 Capslock & j::Send {DOWN}
 Capslock & k::Send {UP}
 Capslock & h::Send {LEFT}
 Capslock & l::Send {RIGHT}
 Capslock & \::SendInput 、
 Capslock & .::SendInput .
-Capslock & Enter::
-Send {End}
-Send {Enter}
-return
+Capslock & Enter::SendInput {End}{Enter}
+Capslock & BackSpace::SendInput {End}+{Home}{BS}
+Capslock & [::File.DoubleChar("[", "]")
+Capslock & 9::File.DoubleChar("(", ")")
+Capslock & '::File.DoubleChar("""", """")
+Capslock & `;::SendInput ：
+Capslock & t::File.Translate()
+
+Capslock & c::SendInput {Home}+{End}^{Insert}
 
 #IfWinActive, AHK_exe Everything.exe
 ^e::
@@ -106,6 +111,10 @@ Suspend on
 IfWinActive AHK_exe notepad.exe
 {
     Send, ^s
+    Send, !{F4}
+}
+IfWinActive AHK_exe ici.exe
+{
     Send, !{F4}
 }
 Send, {ESC}

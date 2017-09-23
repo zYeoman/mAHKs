@@ -503,8 +503,76 @@ class File
     return
     }
     
+    DoubleChar(char1, char2="")
+    {
+        if(char2=="")
+        {
+            char2:=char1
+        }
+        charLen:=StrLen(char2)
+        selText:=this.getSelText()
+        ClipboardOld:=ClipboardAll
+        if(selText)
+        {
+            Clipboard:=char1 . selText . char2
+            SendInput, +{insert}
+        }
+        else
+        {
+            Clipboard:=char1 . char2
+            SendInput, +{insert}{left %charLen%}
+        }
+        Sleep, 100
+        Clipboard:=ClipboardOld
+        Return
+
+    }
+    Translate()
+    {
+        selText:=this.getSelText()
+        if(selText)
+        {
+            ydTranslate(selText)
+        }
+        else
+        {
+            ClipboardOld:=ClipboardAll
+            Clipboard:=""
+            SendInput, ^{Left}^+{Right}^{insert}
+            ClipWait, 0.05
+            selText:=Clipboard
+            ydTranslate(selText)
+            Clipboard:=ClipboardOld
+        }
+        Return
+
+    }
+    getSelText()
+    {
+        ClipboardOld:=ClipboardAll
+        Clipboard:=""
+        SendInput, ^{insert}
+        ClipWait, 0.1
+        if(!ErrorLevel)
+        {
+            selText:=Clipboard
+            Clipboard:=ClipboardOld
+            StringRight, lastChar, selText, 1
+            if(Asc(lastChar)!=10) ;如果最后一个字符是换行符，就认为是在IDE那复制了整行，不要这个结果
+            {
+                return selText
+            }
+        }
+        Clipboard:=ClipboardOld
+        return
+    }
+
 }
 
+ydTranslate(txt)
+{
+    Run, C:\src\ici.exe %txt%
+}
 
 Sub_Hot_RunSpy:
     run %A_ScriptDir%/AU3_Spy.exe
