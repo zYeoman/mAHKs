@@ -105,6 +105,36 @@ class Hot
 class Win
 {
 
+    ID()
+    {
+        WinGet, winID, ID, A
+        return % winID
+    }
+
+    Title(winID := "")
+    {
+        if (winID == "")
+            winID := this.ID()
+        WinGetTitle, title, ahk_id %winID%
+        return % title
+    }
+
+    Class(winID := "")
+    {
+        if (winID == "")
+            winID := this.ID()
+        WinGetClass, class, ahk_id %winID%
+        return % class
+    }
+
+    Path(winID := "")
+    {
+        if (winID == "")
+            winID := this.ID()
+        WinGet, path, ProcessPath, ahk_id %winID%
+        return % path
+    }
+    
     CommandDialog()
     {
         InputBox, command,,,,,100
@@ -147,7 +177,205 @@ class Win
         }
         return
     }
+    
+    ExplorerSelect(path)
+    {
+        explorerpath:= "explorer /select," path
+        Run, %explorerpath%
+    }
+    
+    Show(winID := "")
+    {
+        if (winID == "")
+            winID := this.ID()
+        WinShow, ahk_id %winID%
+    }
+
+    Hide(winID := "")
+    {
+        if (winID == "")
+            winID := this.ID()
+        WinHide, ahk_id %winID%
+    }
+    Transparent(moveto := "", winID := "")
+    {
+        if (winID == "")
+            winID := this.ID()
+        WinGet, Transparent, Transparent, ahk_id %winID%
+        If (Transparent = "")
+            Transparent = 255
+        if (moveto = "")
+            Return % floor(Transparent/2.55)
+        Transparent_New := moveto * 2.55
+        If (Transparent_New < 51)
+            Transparent_New = 51
+        If (Transparent_New > 254 )
+            Transparent_New = 255
+        WinSet, Transparent, %Transparent_New%, ahk_id %winID%
+    }
+    
+	class Cursor
+	{
+		static CornerPixel := 8
+		static info_switch := 0
+
+		CornerPos(X := "", Y := "", cornerPix = "")
+		{
+			if (X = "") or (Y = "")
+			{
+				MouseGetPos, X, Y
+			}
+			if(cornerPix = "")
+			{
+				cornerPix := this.CornerPixel
+			}
+			; Multi Monitor Support
+			SysGet, MonitorCount, MonitorCount
+			Loop, % MonitorCount
+			{
+				SysGet, Mon, Monitor, % A_Index
+				if(X>=MonLeft && Y>= MonTop && X<MonRight && Y<MonBottom)
+				{
+					str =
+					if ( X < MonLeft + cornerPix )
+						str .= "L"
+					else if ( X >= MonRight - cornerPix)
+						str .= "R"
+					if ( Y < MonTop + cornerPix )
+						str .= "T"
+					else if ( Y >= MonBottom - cornerPix)
+						str .= "B"
+					return % str
+				}
+			}
+			return ""
+		}
+
+		IsPos(pos, cornerPix = "")
+		{
+			StringUpper, pos, pos
+			pos_now := this.CornerPos("", "", cornerPix)
+			if (pos_now == "") && (pos == "")
+				Return
+			if StrLen(pos_now) == 1
+				Return % (pos_now == pos)
+			Else
+				pos_now2 := SubStr(pos_now,2,1) SubStr(pos_now,1,1)
+			Return ((pos_now == pos) || (pos_now2 == pos))
+		}
+	}
+    ; //////////////////////////////////////////////////////////////////////////
+    ; //////////////////////////////////////////////////////////////////////////
+    ; //////////////////////////////////////////////////////////////////////////
+    /*
+
+    */
+    class WinMenu
+    {
+        static InfoObj := {}
+        static HideIDs := {}
+        static ini_registered := 0
+
+        Ini()
+        {
+            if (this.ini_registered == 1)
+                Return
+            OneQuick.OnExit("Sub_WinMenu_OnExit")
+            this.ini_registered := 1
+        }
+
+        Show(ID := "")
+        {
+            if (ID == "")
+                ID := Win.ID()
+            Title := Win.Title(ID)
+            Path := Win.Path(ID)
+            Cls := Win.Class(ID)
+            this.InfoObj[1] := Title
+            this.InfoObj[2] := Path
+            this.InfoObj[3] := ID
+            this.InfoObj[4] := Cls
+            Title := SubStr(Title, 1, 150)
+            Path := SubStr(Path, 1, 150)
+            try
+            {
+                Menu, windowMenu, DeleteAll
+            }
+            Try
+            {
+                Menu, windowMenu_ShowWinMenu, DeleteAll
+            }
+            Try
+            {
+                Menu, WinMenu_Trans, DeleteAll
+            }
+            Loop, 9
+            {
+                Menu, WinMenu_Trans, Add, % (110-A_Index*10)`%, Sub_WinMenu_Trans
+            }
+            Trans := Sys.Win.Transparent()
+            Try
+            {
+                Menu, WinMenu_Trans, Check, %Trans%`%
+            }
+            Menu, windowMenu, Add, Transparent: %Trans%`%, :WinMenu_Trans
+            Menu, windowMenu, Add, Open Location, Sub_WinMenu_ExplorerSelect
+            Menu, windowMenu, Add
+            Menu, windowMenu, Add, Title:     %Title%, Sub_WinMenu_CopyToClipboard
+            Menu, windowMenu, Add, Path:    %Path%, Sub_WinMenu_CopyToClipboard
+            Menu, windowMenu, Add, ID:        %ID%, Sub_WinMenu_CopyToClipboard
+            Menu, windowMenu, Add, Class:   %Cls%, Sub_WinMenu_CopyToClipboard
+            Menu, windowMenu, Add
+            Menu, windowMenu, Add, Hide Window, Sub_WinMenu_HideWindow
+            HideIDs_IsVoid := 1
+            For k, v in this.HideIDs
+            {
+                Menu, windowMenu_ShowWinMenu, Add, % k, Sub_WinMenu_ShowWindow
+                HideIDs_IsVoid := 0
+            }
+            if (HideIDs_IsVoid)
+            {
+                Menu, windowMenu_ShowWinMenu, Add, <empty>, Sub_WinMenu_ShowWindow
+                Menu, windowMenu_ShowWinMenu, Disable, <empty>
+            }
+            Menu, windowMenu, Add, Show Window, :windowMenu_ShowWinMenu
+            Menu, windowMenu, Show
+        }
+    }
 }
+
+Sub_WinMenu_Trans:
+Win.Transparent(ceil(110-A_ThisMenuItemPos*10))
+Return
+
+Sub_WinMenu_ExplorerSelect:
+Win.ExplorerSelect(Win.WinMenu.InfoObj[2])
+Return
+
+Sub_WinMenu_CopyToClipboard:
+clip := Win.WinMenu.InfoObj[A_ThisMenuItemPos - 4]
+Clipboard = %clip%
+Return
+
+Sub_WinMenu_HideWindow:
+id := Win.WinMenu.InfoObj[3]
+WinHide, ahk_id %id%
+Win.WinMenu.HideIDs[id "  " Win.WinMenu.InfoObj[1]] := id
+Return
+
+Sub_WinMenu_ShowWindow:
+id := Win.WinMenu.HideIDs[A_ThisMenuItem]
+Win.Show(id)
+Win.WinMenu.HideIDs.Remove(A_ThisMenuItem)
+Return
+
+Sub_WinMenu_OnExit:
+Loop Win.WinMenu.HideIDs
+{
+    id := Win.WinMenu.HideIDs[A_Index]
+    Win.Show(id)
+}
+Return
 
 class File
 {

@@ -23,6 +23,12 @@ Capslock & j::Send {DOWN}
 Capslock & k::Send {UP}
 Capslock & h::Send {LEFT}
 Capslock & l::Send {RIGHT}
+Capslock & \::SendInput 、
+Capslock & .::SendInput .
+Capslock & Enter::
+Send {End}
+Send {Enter}
+return
 
 #IfWinActive, AHK_exe Everything.exe
 ^e::
@@ -35,10 +41,62 @@ return
 ^+c::File.CopyPath()
 #If
 
+; 屏幕边角操作
+; 来自OneQuick
+; Left Top
+#if Win.Cursor.IsPos("LT")
+WheelUp::send {Volume_Up}
+WheelDown::send {Volume_Down}
+MButton::
+keywait, MButton, u
+If Win.Cursor.IsPos("LT")
+    Send {Volume_Mute}
+return
+; Shift+滚轮操作亮度
+; 不实现
+RButton Up::Win.WinMenu.Show()
+#If
+; Right Top
+#if Win.Cursor.IsPos("RT")
+wheelup::send {media_prev}
+wheeldown::send {media_next}
+mbutton::
+keywait, mbutton, u
+if not Win.Cursor.IsPos("RT")
+	return
+send {media_play_pause}
+return
+#if
+; Left or Right
+#if Sys.Cursor.IsPos("L") || Sys.Cursor.IsPos("R")
+wheelup::send {pgup}
+wheeldown::send {pgdn}
++wheelup::send {pgup}{pgup}{pgup}{pgup}{pgup}
++wheeldown::send {pgdn}{pgdn}{pgdn}{pgdn}{pgdn}
+^+wheelup::send {home}
+^+wheeldown::send {end}
+#if
+; ///////////////
+; Top
+#if Sys.Cursor.IsPos("T")
+wheelup::Sys.Win.GotoPreTab()
+wheeldown::Sys.Win.GotoNextTab()
+#if
+; ///////////////
+; Bottom
+#if Win.Cursor.IsPos("B")
+wheelup::send ^#{Left}
+wheeldown::send ^#{Right}
+mbutton::
+keywait, mbutton, u
+if not Sys.Cursor.IsPos("B")
+	return
+send #{tab}
+return
+#if
+
 #IfWinActive ahk_class ConsoleWindowClass
 ^l::SendInput {Raw}clear`n
-
-; Ctrl + U, 清空当前输入的命令
 ^u::Send ^{Home}
 #If
 
