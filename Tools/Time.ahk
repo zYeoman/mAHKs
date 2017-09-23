@@ -28,16 +28,21 @@ return
 RAlt & s::
 TrayTip 开启吧, 洗脑循环
 InputBox, task, 接下来要干什么？, ,,,100
-FileAppend, %Task% start at %A_Now%, track.txt
+FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task% 开始`n, track.txt
 Delay:
 if (work = 5){
     relax := 1
     Run, nircmd.exe speak text 25分钟了，休息一下吧！
-    MsgBox, 4,, %task% 做完了么？
-    IfMsgBox Yes
+    MsgBox, 6,, %task% 做完了么？
+    IfMsgBox Continue
     {
+        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：完成`n, track.txt
         task := ""
-        FileAppend, %Task% complete at %A_Now%`n, track.txt
+    }
+    Else IfMsgBox Cancel
+    {
+        InputBox, actual, 实际上做了什么？, ,,,100
+        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：实际上做了%actual%`n
     }
     TrayTip Timer, 休息
     SetTimer, Delay, off
@@ -58,10 +63,10 @@ if (relax = 2){
     if (task == "")
     {
         InputBox, task, 接下来要干什么？, ,,,100
-        FileAppend, %Task% start at %A_Now%`n, track.txt
+        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：开始`n, track.txt
     }
     work := 1
-    TrayTip Timer, 工作
+    TrayTip Timer, %task%
     SetTimer, RELAX, off
     SetTimer, Delay, 300000
 }
