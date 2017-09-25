@@ -12,7 +12,7 @@ class User_DESKTOP_ANOH053
         ExeList.Insert(0, "C:\src\conemu\ConEmu64.exe")
         ExeList.Insert(5, "C:\Program Files\Listary\Listary.exe")
         ExeList.Insert(10, "Z:\Program Files (x86)\WinSshFS\WinSshFS.exe")
-        
+        ExeList.Insert(15, "E:\2portable\rainmeter\Rainmeter.exe")
         Delay := 0
         Elapse := 0
 
