@@ -8,6 +8,8 @@
 work := 0
 relax := 0
 task := ""
+Times := 0
+FilePath:="C:\Users\Yongwen\Nextcloud\track.txt"
 
 
 RAlt & a::
@@ -24,11 +26,16 @@ RAlt & z::
     relax := 0
     TrayTip 停止吧, 循环
 return
+; 结束番茄
+RAlt & e::
+work = 5
+goto Delay
+return
 ; 开始
 RAlt & s::
 TrayTip 开启吧, 洗脑循环
 InputBox, task, 接下来要干什么？, ,,,100
-FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task% 开始`n, track.txt
+FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task% 开始`n, %FilePath%
 Delay:
 if (work = 5){
     relax := 1
@@ -36,13 +43,19 @@ if (work = 5){
     MsgBox, 6,, %task% 做完了么？
     IfMsgBox Continue
     {
-        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：完成`n, track.txt
+        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：完成`n, %FilePath%
         task := ""
+        Times:=0
     }
     Else IfMsgBox Cancel
     {
         InputBox, actual, 实际上做了什么？, ,,,100
-        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：实际上做了%actual%`n
+        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：实际上做了%actual%`n, %FilePath%
+    }
+    Else
+    {
+        Times+=1
+        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：%Times%`n, %FilePath%
     }
     TrayTip Timer, 休息
     SetTimer, Delay, off
@@ -63,7 +76,7 @@ if (relax = 2){
     if (task == "")
     {
         InputBox, task, 接下来要干什么？, ,,,100
-        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：开始`n, track.txt
+        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：开始`n, %FilePath%
     }
     work := 1
     TrayTip Timer, %task%
