@@ -139,7 +139,18 @@ class Win
     {
         InputBox, command,,,,,100
         if command
-          run(command)
+        {
+            if ErrorLevel
+            {
+                filename := File.TODOFile
+                if InStr(command, "* ") == 1
+                    FileAppend, %command%`n, %filename%
+            }
+            else
+            {
+                run(command)
+            }
+        }
         return
     }
     
