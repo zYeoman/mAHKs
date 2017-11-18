@@ -23,7 +23,8 @@ Capslock & j::Send {DOWN}
 Capslock & k::Send {UP}
 Capslock & h::Send {LEFT}
 Capslock & l::Send {RIGHT}
-Capslock & x::Send {Del}
+Capslock & x::Send {BackSpace}
+Capslock & s::Send ^s
 Capslock & \::SendInput ¡¢
 Capslock & .::SendInput .
 Capslock & Enter::SendInput {End}{Enter}
