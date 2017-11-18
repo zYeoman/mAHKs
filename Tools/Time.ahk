@@ -39,7 +39,8 @@ FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task% 开始`n, %
 Delay:
 if (work = 5){
     relax := 1
-    Run, nircmd.exe speak text 25分钟了，休息一下吧！
+    ;Run, nircmd.exe speak text 25分钟了，休息一下吧！
+    Run, nircmd.exe mediaplay 3000 %A_ScriptDir%/notice.wav
     MsgBox, 6,, %task% 做完了么？
     IfMsgBox Continue
     {
@@ -63,7 +64,7 @@ if (work = 5){
 }
 else{
     T := work*5
-    Run, nircmd.exe speak text %T%分钟了
+    ;Run, nircmd.exe speak text %T%分钟了
     work++
     SetTimer, RELAX, off
     SetTimer, Delay, 300000
@@ -85,7 +86,7 @@ if (relax = 2){
 }
 else{
     T := relax*3
-    Run, nircmd.exe speak text 你已经休息了%T%分钟
+    ;Run, nircmd.exe speak text 你已经休息了%T%分钟
     relax++
     SetTimer, Delay, off
     SetTimer, RELAX, 180000
