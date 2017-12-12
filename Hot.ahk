@@ -15,6 +15,11 @@ Hot.Ini()
 #t::Win.ToggleTitle() ;显示/隐藏标题栏
 #`::Win.ToggleTop() ;置顶/取消置顶
 
+:*:;time::  ; 此热字串通过后面的命令把 ";time" 替换成当前日期和时间.
+FormatTime, CurrentDateTime,, yyyy-MM-dd HH:mm:ss  ; 看起来会像 2017-12-12 16:17:52 这样
+SendInput %CurrentDateTime%
+return
+
 LCtrl & Space::Win.CommandDialog() ;打开运行框
 
 ^!t::File.RunCmdHere()
@@ -26,7 +31,7 @@ Capslock & l::Send {RIGHT}
 Capslock & x::Send {BackSpace}
 Capslock & s::Send ^s
 Capslock & \::SendInput 、
-Capslock & .::SendInput .
+Capslock & .::SendInput 。
 Capslock & Enter::SendInput {End}{Enter}
 Capslock & BackSpace::SendInput {End}+{Home}{BS}
 Capslock & [::File.DoubleChar("[", "]")
