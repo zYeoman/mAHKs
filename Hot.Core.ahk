@@ -12,7 +12,7 @@ Goto CORE_LABLE
 #MaxHotkeysPerInterval 200
 #MaxThreads, 255
 #MaxThreadsPerHotkey, 20
- 
+
 #Include, *i Hot.User.ahk
 ; ////////////////////////////////////
 
@@ -23,7 +23,7 @@ class Hot
 	static icon_suspend := "Icon/fire_blue.ico"
 	static icon_pause := "Icon/fire_not.ico"
 	static icon_suspend_pause := "Icon/fire_blue_not.ico"
-    static Editor = 
+    static Editor =
 
 	Ini()
 	{
@@ -41,7 +41,7 @@ class Hot
 			defNotepad = %SystemRoot%\notepad.exe
 			this.Editor := defNotepad
 		}
-        
+
 		; Menu Tray
 		this.SetIcon(this.icon_default)
         Menu, Tray, Nostandard
@@ -55,7 +55,7 @@ class Hot
 		Menu, Tray, Add, Suspend Hotkey, Sub_Hot_ToggleSuspend
 		Menu, Tray, Add, Pause Thread, Sub_Hot_TogglePause
         Menu, Tray, Add
-        
+
         Menu, Tray, Default, Suspend Hotkey
 		Menu, Tray, Click, 1
         ; Create a Hot.User.ahk file
@@ -78,9 +78,9 @@ class Hot
 			}
 			Run % Hot.Editor . " " . A_ScriptDir . "\Hot.User.ahk"
 		}
-        
+
         Run, %A_ScriptDir%\Scripts\Track.ahk
-        
+
 	}
 
 	SetIcon(ico)
@@ -134,15 +134,26 @@ class Win
         WinGet, path, ProcessPath, ahk_id %winID%
         return % path
     }
-    
+
     CommandDialog()
     {
         InputBox, command,,,,,100
         if command
-          run(command)
+        {
+            if ErrorLevel
+            {
+                filename := File.TODOFile
+                if InStr(command, "* ") == 1
+                    FileAppend, %command%`n, %filename%
+            }
+            else
+            {
+                run(command)
+            }
+        }
         return
     }
-    
+
     ToggleWindows()
     {
         WinGet,KDE_Win,MinMax,A
@@ -161,7 +172,7 @@ class Win
         WinSet, Style, ^0xC00000,A  ;切换标题栏
         return
     }
-    
+
     ToggleTop()
     {
         WinSet, AlwaysOnTop, toggle,A
@@ -177,13 +188,13 @@ class Win
         }
         return
     }
-    
+
     ExplorerSelect(path)
     {
         explorerpath:= "explorer /select," path
         Run, %explorerpath%
     }
-    
+
     Show(winID := "")
     {
         if (winID == "")
@@ -213,7 +224,7 @@ class Win
             Transparent_New = 255
         WinSet, Transparent, %Transparent_New%, ahk_id %winID%
     }
-    
+
 	class Cursor
 	{
 		static CornerPixel := 8
@@ -379,10 +390,10 @@ Return
 
 class File
 {
-    static TODOFile = 
+    static TODOFile =
     pCMD := ""
     pTODO := ""
-    
+
     OpenTODO()
     {
         if(this.TODOFile == "")
@@ -392,7 +403,7 @@ class File
         tFilename := this.TODOFile
         run %tFilename%
     }
-    
+
     OpenFile(FilePath="")
     {
         if(FilePath=="")
@@ -400,10 +411,10 @@ class File
         if (FilePath!="ERROR")
         {
             Send,{Esc}
-            run % Hot.Editor . " " . FilePath
+            run % Hot.Editor . " """ . FilePath . """"
         }
     }
-    
+
     GetPath(fileflag=0)
     ;fileflag=0  输出文件夹路径
     ;fileflag=1  输出文件路径orERROR
@@ -438,7 +449,7 @@ class File
         }
         return Path
     }
-    
+
     RunCmdHere()
     {
         path := this.GetPath()
@@ -466,7 +477,7 @@ class File
         }
         return
     }
-    
+
     Search()
     {
         ;使用Everything搜索
@@ -481,7 +492,7 @@ class File
         }
         return
     }
-    
+
     NewFile()
     {
         ;新建文件
@@ -492,7 +503,7 @@ class File
         }
         return
     }
-    
+
     CopyPath()
     {
     ;复制文件路径
@@ -502,7 +513,7 @@ class File
         }
     return
     }
-    
+
     DoubleChar(char1, char2="")
     {
         if(char2=="")
