@@ -41,7 +41,7 @@ class User_DESKTOP_1H0K4D0
 {
 	Ini()
 	{
-		Hot.Editor:="C:\LiberKey\Apps\Notepad++\App\Notepad++\notepad++.exe"
+		Hot.Editor:="D:\src\sublime\subl.exe"
 	}
 }
 
