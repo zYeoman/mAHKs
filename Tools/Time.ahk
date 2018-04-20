@@ -10,7 +10,7 @@ relax := 0
 task := ""
 Times := 0
 FilePath:="C:\Users\Yongwen\Nextcloud\track.txt"
-
+Menu, Tray, Icon, stopwatch.ico,,1
 
 RAlt & a::
     if (relax > 1)
