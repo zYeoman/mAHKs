@@ -11,7 +11,8 @@ class User_DESKTOP_ANOH053
         ; 采用Object.Insert(Index, Value)的方式，Index表示第几秒启动，Value表示程序
         ExeList.Insert(0, "C:\src\conemu\ConEmu64.exe")
         ExeList.Insert(5, "C:\Program Files\Listary\Listary.exe")
-        ExeList.Insert(10, "Z:\Program Files (x86)\WinSshFS\WinSshFS.exe")
+        ; ExeList.Insert(10, "Z:\Program Files (x86)\WinSshFS\WinSshFS.exe")
+        ExeList.Insert(10, "Z:\Program Files (x86)\CopyQ\copyq.exe")
         ExeList.Insert(15, "E:\2portable\rainmeter\Rainmeter.exe")
         Delay := 0
         Elapse := 0
@@ -31,8 +32,9 @@ class User_DESKTOP_ANOH053
 
             Elapse := ((Seconds-1)>0)?Seconds:0
         }
-        
+
         Run, C:\bin\client.bat, , Hide
+        Run, C:\bin\startvm.bat, , Hide
 
 	}
 }
