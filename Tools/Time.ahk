@@ -35,7 +35,7 @@ return
 RAlt & s::
 TrayTip 开启吧, 洗脑循环
 InputBox, task, 接下来要干什么？, ,,,100
-FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task% 开始`n, %FilePath%
+FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：0 ：开始`n, %FilePath%
 Delay:
 if (work = 5){
     relax := 1
@@ -44,14 +44,14 @@ if (work = 5){
     MsgBox, 6,, %task% 做完了么？
     IfMsgBox Continue
     {
-        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：完成`n, %FilePath%
+        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：%Times% ：完成`n, %FilePath%
         task := ""
         Times:=0
     }
     Else IfMsgBox Cancel
     {
         InputBox, actual, 实际上做了什么？, ,,,100
-        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：实际上做了%actual%`n, %FilePath%
+        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：x ：%actual%`n, %FilePath%
     }
     Else
     {
