@@ -37,28 +37,29 @@ RAlt & s::
 relax := 0
 work  := 0
 InputBox, task, 接下来要干什么？, ,,,100
-FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：0 ：开始`n, %FilePath%
+Time := GetTime()
+FileAppend, %Time% - 开始 - 0 - %Task%`n, %FilePath%
 Delay:
 if (work = 5){
     relax := 1
-    ;Run, nircmd.exe speak text 25分钟了，休息一下吧！
-    Run, nircmd.exe mediaplay 3000 %A_ScriptDir%/notice.wav
+    SoundPlay %A_ScriptDir%/notice.wav
     MsgBox, 6,, %task% 做完了么？
     Times+=1
+    Time := GetTime()
     IfMsgBox Continue
     {
-        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：%Times% ：完成`n, %FilePath%
+        FileAppend, %Time% - 完成 - %Times% - %Task%`n, %FilePath%
         task := ""
         Times:=0
     }
     Else IfMsgBox Cancel
     {
         InputBox, actual, 实际上做了什么？, ,,,100
-        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：x ：%actual%`n, %FilePath%
+        FileAppend, %Time% - 中断 - x - %actual%`n, %FilePath%
     }
     Else
     {
-        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：%Times%`n, %FilePath%
+        FileAppend, %Time% - 继续 - %Times% - %Task%`n, %FilePath%
     }
     TrayTip Timer, 休息
     SetTimer, Delay, off
@@ -73,11 +74,11 @@ return
 
 RELAX:
 if (relax = 2){
-    Run, nircmd.exe speak text 我爱学习，学习使我快乐
     if (task == "")
     {
+        Time := GetTime()
         InputBox, task, 接下来要干什么？, ,,,100
-        FileAppend, %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% - %Task%：0 ：开始`n, %FilePath%
+        FileAppend, %Time% - 开始 - 0 - %Task%`n, %FilePath%
     }
     work := 1
     TrayTip Timer, %task%
@@ -90,3 +91,8 @@ else{
     SetTimer, RELAX, 180000
 }
 return
+GetTime() 
+{
+    time = %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec% 
+    return time
+}
