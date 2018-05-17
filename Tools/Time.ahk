@@ -16,9 +16,9 @@ Menu, Tray, Icon, stopwatch.ico,,1
 ; 当前状态
 RAlt & a::
     if (relax > 1)
-        TrayTip 正在进行, %task%
+        MsgBox 正在进行, %work% %task%
     else
-        TrayTip 正在玩, 好好玩233
+        MsgBox 正在玩, 好好玩233
 return
 ; 结束
 RAlt & z::
