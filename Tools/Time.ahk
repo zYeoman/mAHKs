@@ -45,7 +45,7 @@ return
 RAlt & s::
     relax := 0
     work  := 0
-    task := NextTask(FilePath)
+    task := NextTask(FilePath, task)
 Delay:
     if (work >= 5){
         relax := 1
@@ -81,10 +81,7 @@ return
 
 RELAX:
     if (relax = 2){
-        if (task == "")
-        {
-            task := NextTask(FilePath)
-        }
+        task := NextTask(FilePath, task)
         work := 1
         TrayTip Timer, %task%
         SetTimer, RELAX, off
@@ -128,12 +125,15 @@ PutTask(Task)
         return
     }
 }
-NextTask(FilePath)
+NextTask(FilePath, Task)
 {
     SoundPlay %A_ScriptDir%/notice.wav
-    InputBox, task, 接下来要干什么？, ,,,100
-    time := GetTime()
-    FileAppend, %time% - 开始 - 0 - %task%`n, %FilePath%
-    PutTask(task)
-    return task
+    if (Task == "")
+    {
+        InputBox, Task, 接下来要干什么？, ,,,100
+        time := GetTime()
+        FileAppend, %time% - 开始 - 0 - %Task%`n, %FilePath%
+    }
+    PutTask(Task)
+    return Task
 }
