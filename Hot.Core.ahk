@@ -391,6 +391,7 @@ Return
 class File
 {
     static TODOFile =
+    static exts =
     pCMD := ""
     pTODO := ""
 
@@ -499,7 +500,25 @@ class File
         Path := this.GetPath()
         if (Path!="ERROR"){
             InputBox, filename, ÐÂÎÄ¼þ, ,,,100
-            FileAppend,, %Path%\%filename%
+            filepath = %Path%\%filename%
+            Flag := 1
+            IfInString, filename, .
+            {
+                FileAppend,, %filepath%
+                for i in File.exts
+                    if InStr(filename, File.exts[i])
+                    {
+                        Run %filepath%
+                        Flag := 0
+                    }
+                if Flag
+                    File.OpenFile(filepath)
+            }
+            Else
+            {
+                FileCreateDir, %filepath%
+                Run %filepath%
+            }
         }
         return
     }

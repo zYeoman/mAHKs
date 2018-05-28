@@ -4,6 +4,7 @@ class User_DESKTOP_ANOH053
 	Ini()
 	{
         File.TODOFile := "C:\Users\Yongwen\Nextcloud\todo.txt"
+        File.exts := [".doc",".ppt",".xls"]
         Hot.Editor:="C:\src\subl\subl.exe"
         Process, Exist
         ExeList := Object()
@@ -31,7 +32,7 @@ class User_DESKTOP_ANOH053
 
             Elapse := ((Seconds-1)>0)?Seconds:0
         }
-        
+
         Run, C:\bin\client.bat, , Hide
 
 	}
@@ -41,6 +42,8 @@ class User_DESKTOP_1H0K4D0
 {
 	Ini()
 	{
+        File.TODOFile := "D:\Nextcloud\todo.txt"
+        File.exts := [".doc",".ppt",".xls"]
 		Hot.Editor:="D:\src\sublime\subl.exe"
 	}
 }
