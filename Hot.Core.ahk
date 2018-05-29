@@ -18,87 +18,87 @@ Goto CORE_LABLE
 
 class Hot
 {
-	static ProgramName := "Hot"
-	static icon_default := "Icon/fire.ico"
-	static icon_suspend := "Icon/fire_blue.ico"
-	static icon_pause := "Icon/fire_not.ico"
-	static icon_suspend_pause := "Icon/fire_blue_not.ico"
+    static ProgramName := "Hot"
+    static icon_default := "Icon/fire.ico"
+    static icon_suspend := "Icon/fire_blue.ico"
+    static icon_pause := "Icon/fire_not.ico"
+    static icon_suspend_pause := "Icon/fire_blue_not.ico"
     static Editor =
 
-	Ini()
-	{
-		SetBatchLines, -1   ; maximize script speed!
-		SetWinDelay, -1
+    Ini()
+    {
+        SetBatchLines, -1   ; maximize script speed!
+        SetWinDelay, -1
         SetCapsLockState, AlwaysOff
         DetectHiddenWindows, on
-		CoordMode, Mouse, Screen
-		CoordMode, ToolTip, Screen
-		CoordMode, Menu, Screen
+        CoordMode, Mouse, Screen
+        CoordMode, ToolTip, Screen
+        CoordMode, Menu, Screen
 
         if(this.Editor = "")
-		{
-			; %systmeroot% can't give to this.Editor directly
-			defNotepad = %SystemRoot%\notepad.exe
-			this.Editor := defNotepad
-		}
+        {
+            ; %systmeroot% can't give to this.Editor directly
+            defNotepad = %SystemRoot%\notepad.exe
+            this.Editor := defNotepad
+        }
 
-		; Menu Tray
-		this.SetIcon(this.icon_default)
+        ; Menu Tray
+        this.SetIcon(this.icon_default)
         Menu, Tray, Nostandard
-		Menu, Tray, Tip, % this.ProgramName
+        Menu, Tray, Tip, % this.ProgramName
         Menu, Tray, Add, Open, Sub_Hot_ListLine
         Menu, Tray, Add, Spy, Sub_Hot_RunSpy
         Menu, Tray, Add
-		Menu, Tray, Add, Reload, Sub_Hot_Reload
-		Menu, Tray, Add, Exit, Sub_Hot_Exit
-		Menu, Tray, Add
-		Menu, Tray, Add, Suspend Hotkey, Sub_Hot_ToggleSuspend
-		Menu, Tray, Add, Pause Thread, Sub_Hot_TogglePause
+        Menu, Tray, Add, Reload, Sub_Hot_Reload
+        Menu, Tray, Add, Exit, Sub_Hot_Exit
+        Menu, Tray, Add
+        Menu, Tray, Add, Suspend Hotkey, Sub_Hot_ToggleSuspend
+        Menu, Tray, Add, Pause Thread, Sub_Hot_TogglePause
         Menu, Tray, Add
 
         Menu, Tray, Default, Suspend Hotkey
-		Menu, Tray, Click, 1
+        Menu, Tray, Click, 1
         ; Create a Hot.User.ahk file
-		; and add a User_ComputerName class
-		user_str := "User_" A_ComputerName
-		StringReplace, user_str, user_str, - , _, All
-		user_str := RegExReplace(user_str, "[^a-zA-Z0-9_]")
-		if IsFunc(user_str ".Ini")
-		{
-			%user_str%.Ini()
-		}
-		Else
-		{
-			str := "`nclass " user_str "`n{`n`tIni()`n`t{`n`n`t}`n}`n`n"
-			FileAppend, % str, Hot.User.ahk
-			MsgBox, 0x44, Hello, It's your first time run this script, open Readme file?
-			IfMsgBox, Yes
-			{
-				RunWait % Hot.Editor . " " . A_ScriptDir . "\README.md"
-			}
-			Run % Hot.Editor . " " . A_ScriptDir . "\Hot.User.ahk"
-		}
+        ; and add a User_ComputerName class
+        user_str := "User_" A_ComputerName
+        StringReplace, user_str, user_str, - , _, All
+        user_str := RegExReplace(user_str, "[^a-zA-Z0-9_]")
+        if IsFunc(user_str ".Ini")
+        {
+            %user_str%.Ini()
+        }
+        Else
+        {
+            str := "`nclass " user_str "`n{`n`tIni()`n`t{`n`n`t}`n}`n`n"
+            FileAppend, % str, Hot.User.ahk
+            MsgBox, 0x44, Hello, It's your first time run this script, open Readme file?
+            IfMsgBox, Yes
+            {
+                RunWait % Hot.Editor . " " . A_ScriptDir . "\README.md"
+            }
+            Run % Hot.Editor . " " . A_ScriptDir . "\Hot.User.ahk"
+        }
 
         Run, %A_ScriptDir%\Scripts\Track.ahk
 
-	}
+    }
 
-	SetIcon(ico)
-	{
-		Menu, Tray, Icon, %ico%,,1
-	}
+    SetIcon(ico)
+    {
+        Menu, Tray, Icon, %ico%,,1
+    }
 
-	AutoSetIcon()
-	{
-		if !A_IsSuspended && !A_IsPaused
-			this.SetIcon(this.icon_default)
-		Else if !A_IsSuspended && A_IsPaused
-			this.SetIcon(this.icon_pause)
-		Else if A_IsSuspended && !A_IsPaused
-			this.SetIcon(this.icon_suspend)
-		Else if A_IsSuspended && A_IsPaused
-			this.SetIcon(this.icon_suspend_pause)
-	}
+    AutoSetIcon()
+    {
+        if !A_IsSuspended && !A_IsPaused
+            this.SetIcon(this.icon_default)
+        Else if !A_IsSuspended && A_IsPaused
+            this.SetIcon(this.icon_pause)
+        Else if A_IsSuspended && !A_IsPaused
+            this.SetIcon(this.icon_suspend)
+        Else if A_IsSuspended && A_IsPaused
+            this.SetIcon(this.icon_suspend_pause)
+    }
 
 }
 
@@ -225,56 +225,56 @@ class Win
         WinSet, Transparent, %Transparent_New%, ahk_id %winID%
     }
 
-	class Cursor
-	{
-		static CornerPixel := 8
-		static info_switch := 0
+    class Cursor
+    {
+        static CornerPixel := 8
+        static info_switch := 0
 
-		CornerPos(X := "", Y := "", cornerPix = "")
-		{
-			if (X = "") or (Y = "")
-			{
-				MouseGetPos, X, Y
-			}
-			if(cornerPix = "")
-			{
-				cornerPix := this.CornerPixel
-			}
-			; Multi Monitor Support
-			SysGet, MonitorCount, MonitorCount
-			Loop, % MonitorCount
-			{
-				SysGet, Mon, Monitor, % A_Index
-				if(X>=MonLeft && Y>= MonTop && X<MonRight && Y<MonBottom)
-				{
-					str =
-					if ( X < MonLeft + cornerPix )
-						str .= "L"
-					else if ( X >= MonRight - cornerPix)
-						str .= "R"
-					if ( Y < MonTop + cornerPix )
-						str .= "T"
-					else if ( Y >= MonBottom - cornerPix)
-						str .= "B"
-					return % str
-				}
-			}
-			return ""
-		}
+        CornerPos(X := "", Y := "", cornerPix = "")
+        {
+            if (X = "") or (Y = "")
+            {
+                MouseGetPos, X, Y
+            }
+            if(cornerPix = "")
+            {
+                cornerPix := this.CornerPixel
+            }
+            ; Multi Monitor Support
+            SysGet, MonitorCount, MonitorCount
+            Loop, % MonitorCount
+            {
+                SysGet, Mon, Monitor, % A_Index
+                if(X>=MonLeft && Y>= MonTop && X<MonRight && Y<MonBottom)
+                {
+                    str =
+                    if ( X < MonLeft + cornerPix )
+                        str .= "L"
+                    else if ( X >= MonRight - cornerPix)
+                        str .= "R"
+                    if ( Y < MonTop + cornerPix )
+                        str .= "T"
+                    else if ( Y >= MonBottom - cornerPix)
+                        str .= "B"
+                    return % str
+                }
+            }
+            return ""
+        }
 
-		IsPos(pos, cornerPix = "")
-		{
-			StringUpper, pos, pos
-			pos_now := this.CornerPos("", "", cornerPix)
-			if (pos_now == "") && (pos == "")
-				Return
-			if StrLen(pos_now) == 1
-				Return % (pos_now == pos)
-			Else
-				pos_now2 := SubStr(pos_now,2,1) SubStr(pos_now,1,1)
-			Return ((pos_now == pos) || (pos_now2 == pos))
-		}
-	}
+        IsPos(pos, cornerPix = "")
+        {
+            StringUpper, pos, pos
+            pos_now := this.CornerPos("", "", cornerPix)
+            if (pos_now == "") && (pos == "")
+                Return
+            if StrLen(pos_now) == 1
+                Return % (pos_now == pos)
+            Else
+                pos_now2 := SubStr(pos_now,2,1) SubStr(pos_now,1,1)
+            Return ((pos_now == pos) || (pos_now2 == pos))
+        }
+    }
     ; //////////////////////////////////////////////////////////////////////////
     ; //////////////////////////////////////////////////////////////////////////
     ; //////////////////////////////////////////////////////////////////////////
@@ -291,7 +291,6 @@ class Win
         {
             if (this.ini_registered == 1)
                 Return
-            OneQuick.OnExit("Sub_WinMenu_OnExit")
             this.ini_registered := 1
         }
 
@@ -398,9 +397,9 @@ class File
     OpenTODO()
     {
         if(this.TODOFile == "")
-		{
-			this.TODOFile := %A_ScriptDir% + "/todo.txt"
-		}
+        {
+            this.TODOFile := %A_ScriptDir% + "/todo.txt"
+        }
         tFilename := this.TODOFile
         run %tFilename%
     }
@@ -562,7 +561,7 @@ class File
         selText:=this.getSelText()
         if(selText)
         {
-            ydTranslate(selText)
+            yd(selText)
         }
         else
         {
@@ -571,7 +570,7 @@ class File
             SendInput, ^{Left}^+{Right}^{insert}
             ClipWait, 0.05
             selText:=Clipboard
-            ydTranslate(selText)
+            yd(selText)
             Clipboard:=ClipboardOld
         }
         Return
@@ -599,7 +598,7 @@ class File
 
 }
 
-ydTranslate(txt)
+yd(txt)
 {
     Run, C:\src\ici.exe %txt%
 }
@@ -671,84 +670,28 @@ the command pass to run() can be:
 
 t(str := "")
 {
-	if (str != "")
-		ToolTip, % str
-	Else
-		ToolTip
+    if (str != "")
+        ToolTip, % str
+    Else
+        ToolTip
 }
 
 run(command)
 {
-    if(InStr(command, " "))
+    if(RegExMatch(command, "i)av(\d+)", avn))
+    {
+        run("http://www.bilibili.com/video/av" avn1)
+        return
+    }
+    Try
+    {
+        run, %command%
+        Return
+    }
+    Catch
     {
         Run, https://www.google.com/search?hl=zh-CN&q=%command%
-	}
-    else if(IsLabel(command))
-	{
-		Gosub, %command%
-	}
-	else if (IsFunc(command))
-	{
-		Array := StrSplit(command, ".")
-		If (Array.MaxIndex() >= 2)
-		{
-			cls := Array[1]
-			cls := %cls%
-			Loop, % Array.MaxIndex() - 2
-			{
-				cls := cls[Array[A_Index+1]]
-			}
-			return cls[Array[Array.MaxIndex()]]()
-		}
-		Else
-		{
-			return %command%()
-		}
-	}
-	Else
-	{
-		if(RegExMatch(command, "^https?://"))
-		{
-			brw := OneQuick.Browser
-			if(brw == "")
-				run, %command%
-			Else if(brw == "microsoft-edge:")
-				run, %brw%%command%
-			Else
-				run, %brw% %command%
-			Return
-		}
-		else if(RegExMatch(command, "i)av(\d+)", avn))
-		{
-			run("http://www.bilibili.com/video/av" avn1)
-			return
-		}
-		Try
-		{
-			run, %command%
-			Return
-		}
-		Catch
-		{
-			if(IsFunc("run_user"))
-			{
-				func_name = run_user
-				%func_name%(command)
-			}
-			else
-            {
-				Run, https://www.google.com/search?hl=zh-CN&q=%command%
-            }
-        }
-	}
-}
-
-RunArr(arr)
-{
-	Loop, % arr.MaxIndex()
-	{
-		run(arr[A_Index])
-	}
+    }
 }
 
 
