@@ -40,6 +40,7 @@ class Hot
             ; %systmeroot% can't give to this.Editor directly
             defNotepad = %SystemRoot%\notepad.exe
             this.Editor := defNotepad
+            this.EditorFlag := ""
         }
 
         ; Menu Tray
@@ -411,7 +412,7 @@ class File
         if (FilePath!="ERROR")
         {
             Send,{Esc}
-            run % Hot.Editor . " """ . FilePath . """"
+            Run % Hot.Editor . " " . Hot.EditorFlag . " """ . FilePath . """"
         }
     }
 
@@ -561,7 +562,7 @@ class File
         selText:=this.getSelText()
         if(selText)
         {
-            yd(selText)
+            ydTranslate(selText)
         }
         else
         {
@@ -570,7 +571,7 @@ class File
             SendInput, ^{Left}^+{Right}^{insert}
             ClipWait, 0.05
             selText:=Clipboard
-            yd(selText)
+            ydTranslate(selText)
             Clipboard:=ClipboardOld
         }
         Return
@@ -598,7 +599,7 @@ class File
 
 }
 
-yd(txt)
+ydTranslate(txt)
 {
     Run, C:\src\ici.exe %txt%
 }

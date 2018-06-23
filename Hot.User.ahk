@@ -1,11 +1,12 @@
 
 class User_DESKTOP_ANOH053
 {
-	Ini()
-	{
+    Ini()
+    {
         File.TODOFile := "C:\Users\Yongwen\Nextcloud\todo.txt"
         File.exts := [".doc",".ppt",".xls"]
-        Hot.Editor:="C:\src\subl\subl.exe"
+        Hot.Editor:="C:\src\vim\vim81\gvim.exe"
+        Hot.EditorFlag:="--remote-tab-silent"
         Process, Exist
         ExeList := Object()
 
@@ -37,16 +38,18 @@ class User_DESKTOP_ANOH053
         Run, C:\bin\client.bat, , Hide
         Run, C:\bin\startvm.bat, , Hide
 
-	}
+    }
 }
 
 class User_DESKTOP_1H0K4D0
 {
-	Ini()
-	{
+    Ini()
+    {
         File.TODOFile := "D:\Nextcloud\todo.txt"
         File.exts := [".doc",".ppt",".xls"]
-		Hot.Editor:="D:\src\sublime\subl.exe"
-	}
+        Hot.Editor:="D:\src\sublime\subl.exe"
+        Hot.EditorFlag:=""
+        Run, D:\Nextcloud\Things\dotfile\windows\client.bat, , Hide
+    }
 }
 

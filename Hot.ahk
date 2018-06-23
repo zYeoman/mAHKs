@@ -47,11 +47,29 @@ Capslock & c::SendInput {Home}+{End}^{Insert}
 #IfWinActive, AHK_exe explorer.exe
 ^e::
 File.OpenFile()
+WinShow ahk_id %editorID%
+WinActivate ahk_id %editorID%
 return
 ^f::File.Search()
 ^n::File.NewFile()
 ^+c::File.CopyPath()
 #If
+
+^e::
+editor:=Hot.Editor
+IfWinActive AHK_exe %editor%
+{
+    editorID:=WinExist("A")
+    Send !{esc}
+    WinHide
+}
+Else
+{
+    WinShow ahk_id %editorID%
+    WinActivate ahk_id %editorID%
+}
+return
+
 
 ; ÆÁÄ»±ß½Ç²Ù×÷
 ; À´×ÔOneQuick
