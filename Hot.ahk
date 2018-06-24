@@ -43,9 +43,9 @@ Capslock & t::File.Translate()
 Capslock & c::SendInput {Home}+{End}^{Insert}
 
 #IfWinActive, AHK_exe Everything.exe
-^e::
+F4::
 #IfWinActive, AHK_exe explorer.exe
-^e::
+F4::
 File.OpenFile()
 WinShow ahk_id %editorID%
 WinActivate ahk_id %editorID%
@@ -55,7 +55,7 @@ return
 ^+c::File.CopyPath()
 #If
 
-^e::
+F4::
 editor:=Hot.Editor
 IfWinActive AHK_exe %editor%
 {
@@ -65,8 +65,13 @@ IfWinActive AHK_exe %editor%
 }
 Else
 {
-    WinShow ahk_id %editorID%
-    WinActivate ahk_id %editorID%
+    IfWinExist ahk_id %editorID%
+    {
+        WinShow ahk_id %editorID%
+        WinActivate ahk_id %editorID%
+    }
+    Else
+        Run % Hot.Editor
 }
 return
 
