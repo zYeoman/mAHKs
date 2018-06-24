@@ -463,7 +463,7 @@ class File
             WinWaitActive, AHK_pid %t_pCMD%
             if (path!="ERROR")
             {
-                Send, cd %Path%`n
+                Send, ^ccd %Path%`n
             }
         }
         Else
